@@ -1,6 +1,8 @@
 from flask import Flask, render_template, url_for, flash, redirect
 from forms import RegistrationForm, LoginForm
+# sql db imports
 from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
 app = Flask(__name__)
 # secret key
 app.config['SECRET_KEY'] = 'f43e0ff5e0ad8b9594af298c550b92ca'
@@ -37,6 +39,8 @@ class User(db.model):
     email = db.Column(db.String(200), unique=True, nullable=False)
     user_avi = db.Column(db.String(25), nullable=False, default='default.jpeg')
     password = db.Column(db.String(60), nullable=False)
+    posts = db.relationship('Post', backref='author', lazy=True)
+    reaction = db.relationship('Reaction', backref='author', lazy=True)
 
     def __repr__(self):
         return f"User('{self.username}', '{self.email}', '{self.user_avi}')"
@@ -47,8 +51,34 @@ class User(db.model):
 
 class Post(db.model):
     id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(250), nullable=False)
+    date_posted = db.Column(db.DateTime, nullable=False,
+                            default=datetime.utcnow)
+    content = db.Column(db.Text, nullable=False)
+    content_image = db.Column(db.String(200))
+    user_id = db.column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+
+    def __repr__(self):
+        return f"Post('{self.title}', '{self.date_posted}')"
 
 # end of class posts
+# class relationship
+
+
+class Reaction(db.model):
+    id = db.Column(db.Integer, primary_key=True)
+    date_posted = db.Column(db.DateTime, nullable=False,
+                            default=datetime.utcnow)
+    comment = db.Column(db.Text)
+    like = db.Column(db.String)
+    flag = db.Column(db.String)
+    user_id = db.column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+
+
+    def __repr__(self):
+        return f"Reaction('{self.like}', '{self.date_posted}')"
+
+# end of class relationship
 # end of sql class models
 
 
