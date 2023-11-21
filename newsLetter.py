@@ -4,7 +4,11 @@ from flask_sqlalchemy import SQLAlchemy
 app = Flask(__name__)
 # secret key
 app.config['SECRET_KEY'] = 'f43e0ff5e0ad8b9594af298c550b92ca'
-app.config['SQLAlCHEMY_DATABASE_URI'] = 'sqlite///'
+# sql configs
+app.config['SQLAlCHEMY_DATABASE_URI'] = 'sqlite///newsletter.db'
+
+db = SQLAlchemy(app)
+# end of sql configs
 
 # dummy data
 posts = [
@@ -22,6 +26,30 @@ posts = [
     }
 ]
 # end of dummy data
+
+# sql class models
+# class user
+
+
+class User(db.model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(25), unique=True, nullable=False)
+    email = db.Column(db.String(200), unique=True, nullable=False)
+    user_avi = db.Column(db.String(25), nullable=False, default='default.jpeg')
+    password = db.Column(db.String(60), nullable=False)
+
+    def __repr__(self):
+        return f"User('{self.username}', '{self.email}', '{self.user_avi}')"
+
+# end of class user
+# class posts
+
+
+class Post(db.model):
+    id = db.Column(db.Integer, primary_key=True)
+
+# end of class posts
+# end of sql class models
 
 
 @app.route("/")
