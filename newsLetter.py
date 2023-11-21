@@ -1,8 +1,10 @@
 from flask import Flask, render_template, url_for, flash, redirect
 from forms import RegistrationForm, LoginForm
+from flask_sqlalchemy import SQLAlchemy
 app = Flask(__name__)
 # secret key
 app.config['SECRET_KEY'] = 'f43e0ff5e0ad8b9594af298c550b92ca'
+app.config['SQLAlCHEMY_DATABASE_URI'] = 'sqlite///'
 
 # dummy data
 posts = [
