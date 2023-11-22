@@ -1,3 +1,4 @@
+'''A file containing different database classes'''
 from datetime import datetime
 from newsLetter import db
 
@@ -23,6 +24,7 @@ posts = [
 
 
 class User(db.Model):
+    '''A class containing user details  and structure'''
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(25), unique=True, nullable=False)
     email = db.Column(db.String(200), unique=True, nullable=False)
@@ -39,6 +41,7 @@ class User(db.Model):
 
 
 class Post(db.Model):
+    '''A class containing post details and structure'''
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(250), nullable=False)
     date_posted = db.Column(db.DateTime, nullable=False,
@@ -55,6 +58,7 @@ class Post(db.Model):
 
 
 class Reaction(db.Model):
+    '''A class containing reaction details and structure'''
     id = db.Column(db.Integer, primary_key=True)
     date_posted = db.Column(db.DateTime, nullable=False,
                             default=datetime.utcnow)
