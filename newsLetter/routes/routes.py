@@ -1,21 +1,24 @@
-from flask import render_template, url_for, flash, redirect
-from newsLetter import app
+from flask import Blueprint, render_template, url_for, flash, redirect
 from newsLetter.forms import RegistrationForm, LoginForm
 from newsLetter.models.dbClasses import User, Post, Reaction, posts
+from newsLetter import app
 
 
-@app.route("/")
-@app.route("/home/")
+routes = Blueprint('routes', __name__)
+
+
+@routes.route("/")
+@routes.route("/home/")
 def home():
     return render_template('home.html', posts=posts, title='Home')
 
 
-@app.route("/about/")
+@routes.route("/about/")
 def about():
     return render_template('about.html', title='About')
 
 
-@app.route("/register", methods=['GET', 'POST'])
+@routes.route("/register", methods=['GET', 'POST'])
 def register():
     form = RegistrationForm()
     if form.validate_on_submit():
@@ -24,7 +27,7 @@ def register():
     return render_template('register.html', title='Register', form=form)
 
 
-@app.route("/login", methods=['GET', 'POST'])
+@routes.route("/login", methods=['GET', 'POST'])
 def login():
     form = LoginForm()
     if form.validate_on_submit():

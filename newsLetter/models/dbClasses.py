@@ -1,6 +1,6 @@
 '''A file containing different database classes'''
 from datetime import datetime
-from newsLetter import db
+from . import db
 
 # dummy data
 posts = [

@@ -1,7 +1,6 @@
-from newsLetter.routes import routes
 from flask_sqlalchemy import SQLAlchemy
 from flask import Flask
-
+from .routes.routes import routes
 
 app = Flask(__name__)
 '''secret key'''
@@ -14,6 +13,3 @@ app.config['SQLALCHEMY_DATABASE_URI'] = databaseLink
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 '''end of sql configs'''
-
-'''import routes'''
-app.register_blueprint(routes)
