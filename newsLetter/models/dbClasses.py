@@ -30,6 +30,10 @@ class User(db.Model):
     email = db.Column(db.String(200), unique=True, nullable=False)
     user_avi = db.Column(db.String(25), nullable=False, default='default.jpeg')
     password = db.Column(db.String(60), nullable=False)
+
+    latitude = db.Column(db.Float)
+    longitude = db.Column(db.Float)
+
     posts = db.relationship('Post', backref='author', lazy=True)
     reaction = db.relationship('Reaction', backref='author', lazy=True)
 
@@ -50,6 +54,9 @@ class Post(db.Model):
     content_image = db.Column(db.String(200))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
+    latitude = db.Column(db.Float)
+    longitude = db.Column(db.Float)
+
     def __repr__(self):
         return f"Post('{self.title}', '{self.date_posted}')"
 
@@ -66,8 +73,10 @@ class Reaction(db.Model):
     like = db.Column(db.String)
     flag = db.Column(db.String)
     post_id = db.Column(db.Integer, db.ForeignKey('post.id'), nullable=False)
-
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+
+    latitude = db.Column(db.Float)
+    longitude = db.Column(db.Float)
 
     def __repr__(self):
         return f"Reaction('{self.like}', '{self.date_posted}')"
