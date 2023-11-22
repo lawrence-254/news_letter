@@ -16,3 +16,4 @@ db = SQLAlchemy(app)
 '''end of sql configs'''
 
 '''import routes'''
+app.register_blueprint(routes)
