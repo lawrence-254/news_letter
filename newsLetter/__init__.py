@@ -1,6 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask import Flask
-from .routes.routes import routes
+from newsLetter.routes import routes
 
 app = Flask(__name__)
 '''secret key'''
