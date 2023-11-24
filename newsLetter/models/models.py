@@ -70,8 +70,8 @@ class Reaction(db.Model):
     date_posted = db.Column(db.DateTime, nullable=False,
                             default=datetime.utcnow)
     comment = db.Column(db.Text)
-    like = db.Column(db.String)
-    flag = db.Column(db.String)
+    like = db.Column(db.String(255))
+    flag = db.Column(db.String(255))
     post_id = db.Column(db.Integer, db.ForeignKey('post.id'), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 

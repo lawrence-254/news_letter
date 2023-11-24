@@ -4,7 +4,9 @@ from newsLetter.routes import routes
 
 '''A python file that is used to run the news letter web app'''
 
+'''create a db'''
+# with app.app_context():
+#     db.create_all()
 
 if __name__ == '__main__':
-    # db.create_all()
     app.run(debug=True)

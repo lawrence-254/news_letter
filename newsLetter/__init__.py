@@ -16,3 +16,7 @@ db = SQLAlchemy(app)
 
 ''' import route '''
 from newsLetter.routes import routes
+'''sql tables'''
+with app.app_context():
+    # Create all tables
+    db.create_all()
