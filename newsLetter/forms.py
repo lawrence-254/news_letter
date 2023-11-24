@@ -69,3 +69,7 @@ class UpdateDetailsForm(FlaskForm):
 
 class PostForm(FlaskForm):
     '''a form used to make/create posts'''
+    title = StringField('Title', validators=[DataRequired()])
+    content = TextAreaField('Content', validators=[DataRequired()])
+    content_image = FileField('Content Image')
+    submit = SubmitField('Post')
