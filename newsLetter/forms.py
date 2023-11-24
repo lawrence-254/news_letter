@@ -1,7 +1,7 @@
 '''A file containing form classes'''
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
-from wtforms import StringField, SubmitField, PasswordField, BooleanField
+from wtforms import StringField, TextAreaField, SubmitField, PasswordField, BooleanField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from newsLetter.models.models import User
 from flask_login import current_user
@@ -65,3 +65,7 @@ class UpdateDetailsForm(FlaskForm):
             email = User.query.filter_by(email=email.data).first()
             if email:
                 raise ValidationError('Email exist, please check your email')
+
+
+class PostForm(FlaskForm):
+    '''a form used to make/create posts'''
