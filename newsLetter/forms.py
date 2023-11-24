@@ -50,7 +50,7 @@ class UpdateDetailsForm(FlaskForm):
     username = StringField('User Name', validators=[
                            DataRequired(), Length(min=6, max=25)])
     email = StringField('Email', validators=[DataRequired(), Email()])
-    picture = FileField('Update avi', validators=[FileAllowed(['jpeg', 'png'])])
+    picture = FileField('Update avi', validators=[FileAllowed(['jpeg', 'png', 'jpg'])])
     submit = SubmitField('Update')
     def validate_username(self, username):
         '''checks for username duplication'''

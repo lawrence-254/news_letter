@@ -71,7 +71,7 @@ def logout():
     return redirect(url_for('home'))
 
 def save_picture(input_picture):
-    rand = secrets.token.hex(4)
+    rand = secrets.token_hex(4)
     _, file_extension = os.path.splitext(input_picture.filename)
     pic_filename = rand + file_extension
     pic_path = os.path.join(app.root_path, 'static/avi', pic_filename)
@@ -100,3 +100,8 @@ def account():
         title='Account',
         avi_image=avi_image,
         form=form)
+
+@app.route('/post/new')
+@login_required
+def new_post();
+return render_template('create_post', title='New Post')
