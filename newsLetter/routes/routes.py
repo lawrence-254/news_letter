@@ -1,7 +1,7 @@
 from flask import render_template, url_for, flash, redirect
 from newsLetter import app
 from newsLetter.forms import RegistrationForm, LoginForm
-from newsLetter.models import User, Post, Reaction, posts
+from newsLetter.models.models import User, Post, Reaction, posts
 
 
 

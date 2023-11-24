@@ -15,4 +15,4 @@ db = SQLAlchemy(app)
 '''end of sql configs'''
 
 ''' import route '''
-from newsLetter import routes
+from newsLetter.routes import routes
