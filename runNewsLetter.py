@@ -1,4 +1,4 @@
-from newsLetter.models.models import User, Post, Reaction, posts
+from newsLetter.models.models import User, Post, Reaction
 from newsLetter import app, db
 from newsLetter.routes import routes
 

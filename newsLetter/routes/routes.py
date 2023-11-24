@@ -1,13 +1,14 @@
 from flask import render_template, url_for, flash, redirect
 from newsLetter import app, db, crypt
 from newsLetter.forms import RegistrationForm, LoginForm
-from newsLetter.models.models import User, Post, Reaction, posts
+from newsLetter.models.models import User, Post, Reaction
+from flask_login import login_user
 
 
 @app.route("/")
 @app.route("/home/")
 def home():
-    return render_template('home.html', posts=posts, title='Home')
+    return render_template('home.html', title='Home')
 
 
 @app.route("/about/")
@@ -19,18 +20,26 @@ def about():
 def register():
     form = RegistrationForm()
     if form.validate_on_submit():
-        '''generates a hashed password'''
-        pwd=form.password.data
-        hashed_password = crypt.generate_password_hash(pwd)
+        # Generate hashed password
+        pwd = form.password.data
+        hashed_password = crypt.generate_password_hash(pwd).decode('utf-8')
+        # Create a new user with the hashed password
         user_query = User(
             username=form.username.data,
             email=form.email.data,
-            password=hashed_password)
+            password=hashed_password
+        )
+        # Add the user to the database and commit the changes
         db.session.add(user_query)
         db.session.commit()
-        if form.validate_on_submit():
-            flash(f"Success, please login", 'success')
-            return redirect(url_for('login'))
+        flash(f"Success, please login", 'success')
+        return redirect(url_for('login'))
+    else:
+        # Handle form validation errors
+        for field, errors in form.errors.items():
+            for error in errors:
+                flash(f"Error in {getattr(form, field).label.text}: {error}", 'danger')
+
     return render_template('register.html', title='Register', form=form)
 
 
@@ -38,6 +47,11 @@ def register():
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        flash(f"welcome back {form.email.data}", 'success')
-        return redirect(url_for('home'))
+        user = User.query.filter_by(email=form.email.data).first()
+        if user and crypt.check_password_hash(user.password, form.password.data):
+            login_user(user, remember=form.remember.data)
+            flash(f"welcome back", 'success')
+            return redirect(url_for('home'))
+        else:
+            flash(f"Login not successful, please check password and email")
     return render_template('login.html', title='Login', form=form)

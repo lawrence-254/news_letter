@@ -1,29 +1,18 @@
 '''A file containing different database classes'''
 from datetime import datetime
-from newsLetter import db
-
-# dummy data
-posts = [
-    {
-        'author': 'peter griffin',
-        'title': 'peter copter',
-        'content': 'flying',
-        'date_posted': 'january 15, 2020'
-    },
-    {
-        'author': 'stew griffin',
-        'title': 'the duce',
-        'content': 'victory shall be mine',
-        'date_posted': 'february 14, 2020'
-    }
-]
-# end of dummy data
-
-# sql class models
-# class user
+from newsLetter import db, login_manager
+from flask_login import UserMixin
 
 
-class User(db.Model):
+'''auxiliary function to load user'''
+@login_manager.user_loader
+def load_user(user_id):
+    id_user = int(user_id)
+    return User.query.get(id_user)
+
+'''sql class models'''
+'''class user'''
+class User(db.Model, UserMixin):
     '''A class containing user details  and structure'''
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(25), unique=True, nullable=False)
