@@ -2,7 +2,7 @@ import os
 import secrets
 from flask import render_template, request, url_for, flash, redirect
 from newsLetter import app, db, crypt
-from newsLetter.forms import RegistrationForm, LoginForm, UpdateDetailsForm
+from newsLetter.forms import RegistrationForm, LoginForm, UpdateDetailsForm, PostForm
 from newsLetter.models.models import User, Post, Reaction
 from flask_login import login_user, current_user, logout_user, login_required
 
@@ -101,7 +101,8 @@ def account():
         avi_image=avi_image,
         form=form)
 
-@app.route('/post/new')
+@app.route('/post/new', methods=['GET', 'POST'])
 @login_required
-def new_post();
-return render_template('create_post', title='New Post')
+def new_post():
+    form = PostForm()
+    return render_template('create_post', title='New Post' form=form)
