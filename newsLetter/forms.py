@@ -21,12 +21,12 @@ class RegistrationForm(FlaskForm):
         '''checks for username duplication'''
         user = User.query.filter_by(username=username.data).first()
         if user:
-            raise validationError('User name exist, please choose another one')
+            raise ValidationError('User name exist, please choose another one')
     def validate_email(self, email):
         '''checks for email duplication'''
         email = User.query.filter_by(email=email.data).first()
         if email:
-            raise validationError('Email exist, please check your email')
+            raise ValidationError('Email exist, please check your email')
 
 
 class LoginForm(FlaskForm):
