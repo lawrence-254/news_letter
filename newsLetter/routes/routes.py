@@ -106,6 +106,7 @@ def account():
 def new_post():
     form = PostForm()
     if form.validate_on_submit():
+        post = Post(title=form.title.data, content= form.content.data)
         flash('post created successfully')
         return redirect(url_for('home'))
     return render_template('create_post.html', title='New Post', form=form)
