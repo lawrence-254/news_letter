@@ -41,6 +41,7 @@
             <!-- Navbar Right Side -->
             {% if current_user.is_authenticated %}
             <div class="navbar-nav ml-auto">
+              <a class="nav-item nav-link" href="{{ url_for('new_post') }}">Create Post</a>
               <a class="nav-item nav-link" href="{{ url_for('account') }}">Account</a>
               <a class="nav-item nav-link" href="{{ url_for('logout') }}">Logout</a>
             </div>
