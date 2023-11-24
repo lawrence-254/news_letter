@@ -1,5 +1,6 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from flask_bcrypt import Bcrypt
 
 
 app = Flask(__name__)
@@ -13,6 +14,8 @@ app.config['SQLALCHEMY_DATABASE_URI'] = databaseLink
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 '''end of sql configs'''
+'''hashing'''
+crypt = Bcrypt(app)
 
 ''' import route '''
 from newsLetter.routes import routes

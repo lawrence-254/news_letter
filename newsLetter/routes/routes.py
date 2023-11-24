@@ -1,5 +1,5 @@
 from flask import render_template, url_for, flash, redirect
-from newsLetter import app, db, bcrypt
+from newsLetter import app, db, crypt
 from newsLetter.forms import RegistrationForm, LoginForm
 from newsLetter.models.models import User, Post, Reaction, posts
 
@@ -18,18 +18,19 @@ def about():
 @app.route("/register", methods=['GET', 'POST'])
 def register():
     form = RegistrationForm()
-    '''generates a hashed password'''
-    hashed_password = bcrypt.generate_password_hash(
-        form.password.data).decode('utf-8')
-    user_query = User(
-        username=form.username.data,
-        email=form.email.data,
-        password=hashed_password)
-    db.session.add(user_query)
-    db.session.commit()
     if form.validate_on_submit():
-        flash(f"Success, please login", 'success')
-        return redirect(url_for('login'))
+        '''generates a hashed password'''
+        pwd=form.password.data
+        hashed_password = crypt.generate_password_hash(pwd)
+        user_query = User(
+            username=form.username.data,
+            email=form.email.data,
+            password=hashed_password)
+        db.session.add(user_query)
+        db.session.commit()
+        if form.validate_on_submit():
+            flash(f"Success, please login", 'success')
+            return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
 
 
