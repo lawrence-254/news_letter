@@ -52,10 +52,9 @@
     <div class="form-group mt-4 mb-4">
       {{ form.submit(class="btn btn-outline-success") }}
     </div>
-    <small class="text-muted mt-4">
-      {{ form.hidden_tag() }} {{ form.title.label }} {{ form.title(size=32) }}
-      {{ form.content.label }} {{ form.content(rows=10) }} {{
-      form.content_image.label }} {{ form.content_image() }}
+    <small class="text-muted mt-4 form-group">
+      {{ form.content_image.label(class="form-control-label") }} {{
+      form.content_image() }}
     </small>
   </form>
 </div>
