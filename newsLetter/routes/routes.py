@@ -1,3 +1,5 @@
+import os
+import secrets
 from flask import render_template, request, url_for, flash, redirect
 from newsLetter import app, db, crypt
 from newsLetter.forms import RegistrationForm, LoginForm, UpdateDetailsForm
@@ -68,10 +70,30 @@ def logout():
     logout_user()
     return redirect(url_for('home'))
 
-@app.route('/account')
+def save_picture(input_picture):
+    rand = secrets.token.hex(4)
+    _, file_extension = os.path.splitext(input_picture.filename)
+    pic_filename = rand + file_extension
+    pic_path = os.path.join(app.root_path, 'static/avi', pic_filename)
+    input_picture.save(pic_path)
+    return pic_filename
+
+@app.route('/account', methods=['GET', 'POST'])
 @login_required
 def account():
     form = UpdateDetailsForm()
+    if form.validate_on_submit():
+        if form.picture.data:
+            avi_image = save_picture(form.picture.data)
+            current_user.user_avi =  avi_image
+        current_user.username = form.username.data
+        current_user.email = form.email.data
+        db.session.commit()
+        flash(f'Account details update success', 'success')
+        return redirect(url_for('account'))
+    elif request.method == 'GET':
+        form.username.data = current_user.username
+        form.email.data = current_user.email
     avi_image = url_for('static', filename='avi/'+ current_user.user_avi)
     return render_template(
         'account.html',

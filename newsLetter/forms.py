@@ -1,5 +1,6 @@
 '''A file containing form classes'''
 from flask_wtf import FlaskForm
+from flask_wtf.file import FileField, FileAllowed
 from wtforms import StringField, SubmitField, PasswordField, BooleanField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from newsLetter.models.models import User
@@ -49,7 +50,7 @@ class UpdateDetailsForm(FlaskForm):
     username = StringField('User Name', validators=[
                            DataRequired(), Length(min=6, max=25)])
     email = StringField('Email', validators=[DataRequired(), Email()])
-
+    picture = FileField('Update avi', validators=[FileAllowed(['jpeg', 'png'])])
     submit = SubmitField('Update')
     def validate_username(self, username):
         '''checks for username duplication'''
