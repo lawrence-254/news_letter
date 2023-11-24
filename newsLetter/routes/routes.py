@@ -10,7 +10,8 @@ from flask_login import login_user, current_user, logout_user, login_required
 @app.route("/")
 @app.route("/home/")
 def home():
-    return render_template('home.html', title='Home')
+    posts= Post.query.all()
+    return render_template('home.html', posts=Posts, title='Home')
 
 
 @app.route("/about/")
@@ -106,7 +107,9 @@ def account():
 def new_post():
     form = PostForm()
     if form.validate_on_submit():
-        post = Post(title=form.title.data, content= form.content.data)
+        post = Post(title=form.title.data, content= form.content.data, author=current_user)
+        db.session.add(post)
+        db.session.commit()
         flash('post created successfully')
         return redirect(url_for('home'))
     return render_template('create_post.html', title='New Post', form=form)
