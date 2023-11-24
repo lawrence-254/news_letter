@@ -1,6 +1,6 @@
 from flask import render_template, request, url_for, flash, redirect
 from newsLetter import app, db, crypt
-from newsLetter.forms import RegistrationForm, LoginForm
+from newsLetter.forms import RegistrationForm, LoginForm, UpdateDetailsForm
 from newsLetter.models.models import User, Post, Reaction
 from flask_login import login_user, current_user, logout_user, login_required
 
@@ -71,4 +71,10 @@ def logout():
 @app.route('/account')
 @login_required
 def account():
-    return render_template('account.html', title='Account')
+    form = UpdateDetailsForm()
+    avi_image = url_for('static', filename='avi/'+ current_user.user_avi)
+    return render_template(
+        'account.html',
+        title='Account',
+        avi_image=avi_image,
+        form=form)
