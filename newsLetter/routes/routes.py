@@ -142,3 +142,12 @@ def post_update(post_id):
         title='Update Your Post',
         form=form,
         legend='Update Your Post')
+
+@app.route('/post/<int:post_id>/delete', methods=['POST'])
+@login_required
+def post_delete(post_id):
+    post = Post.query.get_or_404(post_id)
+    if post.author != current_user:
+        abort(403)
+    db.session.delete(post)
+    return redirect(url_for('home'))
