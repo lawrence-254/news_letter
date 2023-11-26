@@ -1,6 +1,6 @@
 import os
 import secrets
-from flask import render_template, request, url_for, flash, redirect
+from flask import render_template, request, url_for, flash, redirect, abort
 from newsLetter import app, db, crypt
 from newsLetter.forms import RegistrationForm, LoginForm, UpdateDetailsForm, PostForm
 from newsLetter.models.models import User, Post, Reaction
@@ -112,10 +112,26 @@ def new_post():
         db.session.commit()
         flash('post created successfully')
         return redirect(url_for('home'))
-    return render_template('create_post.html', title='New Post', form=form)
+    return render_template('create_post.html', title='New Post', legend='New Post', form=form)
 
 
 @app.route('/post/<int:post_id>')
 def post(post_id):
     post = Post.query.get_or_404(post_id)
     return render_template('post.html', title=post.title, post=post)
+
+
+@app.route('/post/<int:post_id>/update', methods=['GET', 'POST'])
+@login_required
+def post_update(post_id):
+    post = Post.query.get_or_404(post_id)
+    if post.author != current_user:
+        abort(403)
+    form = PostForm()
+    form.title.data = post.title
+    form.content.data = post.content
+    return render_template(
+        'create_post.html',
+        title='Update Your Post',
+        form=form,
+        legend='Update Your Post')
