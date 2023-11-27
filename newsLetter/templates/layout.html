@@ -81,16 +81,23 @@
             <h3>{{ title }}</h3>
             <p class='text-muted'>
               <ul class="list-group">
+                <li class="list-group-item list-group-item-light">
+                  <div class="navbar-nav mr-auto">
+                    <a class="navbar-brand mr-4" href="{{ url_for('home') }}">
+                      Home
+                    </a>
+                  </div>
+                </li>
                 {% if current_user.is_authenticated %}
                 <li class="list-group-item list-group-item-light">
                   <div class="navbar-nav mr-auto">
                     <a class="nav-item nav-link" href="{{ url_for('new_post') }}">
-                    New Post
-                  </a>
+                      New Post
+                    </a>
                   </div>
                 </li>
                 <li class="list-group-item list-group-item-light">
-                  <div class="navbar-nav mr-auto"></div>
+                  <div class="navbar-nav mr-auto">
                   <a class="nav-item nav-link" href="{{ url_for('account') }}">
                     Account
                   </a>
