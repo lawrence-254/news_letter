@@ -82,6 +82,7 @@ def save_picture(input_picture):
 @app.route('/account', methods=['GET', 'POST'])
 @login_required
 def account():
+    Posts= Post.query.all()
     form = UpdateDetailsForm()
     if form.validate_on_submit():
         if form.picture.data:
@@ -100,7 +101,8 @@ def account():
         'account.html',
         title='Account',
         avi_image=avi_image,
-        form=form)
+        form=form,
+        posts=Posts)
 
 @app.route('/post/new', methods=['GET', 'POST'])
 @login_required
