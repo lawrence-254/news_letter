@@ -50,11 +50,11 @@
     </div>
   </form>
 </div>
-
-  {% for post in post %}
+  <div class="">
+    <h1>posts</h1>
+      {% for post in posts %}
   {% if post.author == current_user %}
-  {% endif %}
-  <div class="content-section">
+    <div class="content-section">
   <div class="media-body">
         <h2>
       <a class="article-title" href="{{ url_for('post', post_id=post.id) }}"
@@ -64,6 +64,9 @@
     <p class="article-content">{{ post.content }}</p>
   </div>
   </div>
+  {% endif %}
   {% endfor %}
+  </div>
+
 {% endblock content %}
 
