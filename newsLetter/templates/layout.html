@@ -45,11 +45,7 @@
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarToggle">
-            <div class="navbar-nav mr-auto">
-              <a class="nav-item nav-link" href="{{ url_for('about') }}"
-                >About</a
-              >
-            </div>
+
             <!-- Navbar Right Side -->
             {% if current_user.is_authenticated %}
             <div class="navbar-nav ml-auto">
@@ -80,15 +76,34 @@
     <!-- main content section -->
     <main role="main" class="container">
       <div class="row">
-        <div class="col-md-2">
+        <div class="col-md-2 mt-0">
           <div class="content-section">
             <h3>{{ title }}</h3>
-            <p class='text-muted'>You can put any information here you'd like.
+            <p class='text-muted'>
               <ul class="list-group">
-                <li class="list-group-item list-group-item-light">{{ title }}</li>
-                <li class="list-group-item list-group-item-light">Announcements</li>
-                <li class="list-group-item list-group-item-light">Calendars</li>
-                <li class="list-group-item list-group-item-light">etc</li>
+                {% if current_user.is_authenticated %}
+                <li class="list-group-item list-group-item-light">
+                  <div class="navbar-nav mr-auto">
+                    <a class="nav-item nav-link" href="{{ url_for('new_post') }}">
+                    New Post
+                  </a>
+                  </div>
+                </li>
+                <li class="list-group-item list-group-item-light">
+                  <div class="navbar-nav mr-auto"></div>
+                  <a class="nav-item nav-link" href="{{ url_for('account') }}">
+                    Account
+                  </a>
+                  </div>
+                </li>
+                {% endif %}
+                <li class="list-group-item list-group-item-light">
+                  <div class="navbar-nav mr-auto">
+                    <a class="nav-item nav-link" href="{{ url_for('about') }}">
+                      About
+                    </a>
+                  </div>
+                </li>
               </ul>
             </p>
           </div>
