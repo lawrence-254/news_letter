@@ -161,9 +161,14 @@ def post_delete(post_id):
 def post_reaction():
     form = ReactionForm()
     if form.validate_on_submit():
-        reaction = Reaction(title=form.title.data, content= form.content.data, author=current_user)
+        reaction = Reaction(
+            comment=form.comment.data,
+            like=form.like.data,
+            flag=form.flag.data,
+            author=current_user
+            )
         db.session.add(reaction)
         db.session.commit()
-        flash('Reacted to post successfully')
+        flash('Reacted to post successfully', 'success')
         return redirect(url_for('home'))
-    return render_template('create_post.html', title='New Post', legend='New Post', form=form)
+    return render_template('post_reaction.html', form=form)

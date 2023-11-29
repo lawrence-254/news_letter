@@ -73,3 +73,10 @@ class PostForm(FlaskForm):
     content = TextAreaField('Content', validators=[DataRequired()])
     content_image = FileField('Content Image')
     submit = SubmitField('Post')
+
+class ReactionForm(FlaskForm):
+    '''Form to record reaction i.e  comments'''
+    comment = TextAreaField('Comment')
+    like = BooleanField('Like')
+    flag = BooleanField('Flag')
+    submit = SubmitField('Submit')
