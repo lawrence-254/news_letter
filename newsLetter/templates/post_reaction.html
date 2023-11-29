@@ -1,0 +1,50 @@
+{% extends "layout.html" %} {% block content %}
+<div class="content-section">
+  <form action="" method="post" enctype="multipart/form-data">
+    {{ form.hidden_tag() }}
+    <fieldset class="form-group">
+      <div class="form-group">
+        {{form.comment.label(class="form-control-label") }}
+        <!-- checking for correct comment parameters  -->
+        {% if form.comment.errors %}
+        <!--   -->
+        {{ form.comment(class="form-control form-control-lg is-invalid") }}
+        <!-- error display block -->
+        <div class="invalid-feedback">
+        {% for error in form.comment.errors %}
+        <span>{{ error }}</span>
+        {% endfor %}
+        </div>
+        <!-- end of error display block -->
+        {% else %}
+        <!--  -->
+        {{ form.comment(class="form-control form-control-lg") }}
+        <!--  -->
+        {% endif %}
+        <!-- end of checking -->
+      </div>
+      <div class="form-group mb-4">
+        {{form.like.label(class="form-control-label") }}
+        <!--  ********************************** -->
+        {{ form.like(class="form-control form-control-lg") }}
+        <!-- ********************************** -->
+      </div>
+        <div class="form-group mb-4">
+        {{form.flag.label(class="form-control-label") }}
+        <!--  ********************************** -->
+        {{ form.flag(class="form-control form-control-lg") }}
+        <!-- ********************************** -->
+      </div>
+      <small class="text-muted mt-8 form-group">
+        {{ form.content_image.label(class="form-control-label") }}
+        <!-- image field -->
+        {{ form.content_image(class="form-control form-control-sm ") }}
+        <!-- end -->
+      </small>
+    </fieldset>
+    <div class="form-group mt-4 mb-4">
+      {{ form.submit(class="btn btn-outline-success") }}
+    </div>
+  </form>
+</div>
+{% endblock content %}
