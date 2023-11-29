@@ -155,3 +155,15 @@ def post_delete(post_id):
     db.session.commit()
     flash(f'Post deleted!', 'info')
     return redirect(url_for('home'))
+
+@app.route('/post/reaction', methods=['GET', 'POST'])
+@login_required
+def post_reaction():
+    form = ReactionForm()
+    if form.validate_on_submit():
+        reaction = Reaction(title=form.title.data, content= form.content.data, author=current_user)
+        db.session.add(reaction)
+        db.session.commit()
+        flash('Reacted to post successfully')
+        return redirect(url_for('home'))
+    return render_template('create_post.html', title='New Post', legend='New Post', form=form)
