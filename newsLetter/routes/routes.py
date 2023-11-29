@@ -156,19 +156,33 @@ def post_delete(post_id):
     flash(f'Post deleted!', 'info')
     return redirect(url_for('home'))
 
-@app.route('/post/reaction', methods=['GET', 'POST'])
+@app.route('/post/reaction/<int:post_id>', methods=['GET', 'POST'])
 @login_required
-def post_reaction():
+def post_reaction(post_id):
+    '''post id'''
+    post = Post.query.get_or_404(post_id)
     form = ReactionForm()
+    '''retrieve form values'''
+    current_form_values = Reaction.query.filter_by(
+        author=current_user,
+        post_id=request.args.get('post_id')
+        ).order_by(Reaction.id.desc()).first()
+    '''check for like flag population'''
+    if current_form_values:
+        form.like.default = current_form_values.like
+        form.flag.default = current_form_values.flag
+        form.process()
+    '''validate incoming values'''
     if form.validate_on_submit():
         reaction = Reaction(
             comment=form.comment.data,
             like=form.like.data,
             flag=form.flag.data,
-            author=current_user
+            author=current_user,
+            post_id=request.args.get('post_id')
             )
         db.session.add(reaction)
         db.session.commit()
         flash('Reacted to post successfully', 'success')
         return redirect(url_for('home'))
-    return render_template('post_reaction.html', form=form)
+    return render_template('post_reaction.html', post=post, form=form)

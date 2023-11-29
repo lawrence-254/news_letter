@@ -29,7 +29,26 @@
       </div>
       {% endif %}
     </div>
-    reaction
+    <!-- 1 section -->
+    <div class="article-reactions mt-4">
+      <h3>Reactions</h3>
+      {% for reaction in post.reactions %}
+      <p>
+        <strong>{{ reaction.author.username }}</strong>: {{ reaction.comment }}
+        {% if reaction.like %}
+        <span class="badge badge-success">Like</span>
+        {% endif %} {% if reaction.flag %}
+        <span class="badge badge-danger">Flag</span>
+        {% endif %}
+      </p>
+      {% endfor %}
+    </div>
+    <!-- / -->
+    <!--  -->
+    {% if current_user.is_authenticated %} {% include "post_reaction.html" %} {%
+    endif %} {% if current_user.is_authenticated %} {% include
+    "post_reaction.html" %} {% endif %}
+    <!-- / -->
   </div>
 </article>
 <!-- Modal -->
