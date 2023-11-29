@@ -2,7 +2,7 @@ import os
 import secrets
 from flask import render_template, request, url_for, flash, redirect, abort
 from newsLetter import app, db, crypt
-from newsLetter.forms import RegistrationForm, LoginForm, UpdateDetailsForm, PostForm
+from newsLetter.forms import RegistrationForm, LoginForm, UpdateDetailsForm, PostForm, ReactionForm
 from newsLetter.models.models import User, Post, Reaction
 from flask_login import login_user, current_user, logout_user, login_required
 
