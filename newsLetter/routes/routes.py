@@ -162,10 +162,11 @@ def post_reaction(post_id):
     '''post id'''
     post = Post.query.get_or_404(post_id)
     form = ReactionForm()
+
     '''retrieve form values'''
     current_form_values = Reaction.query.filter_by(
         author=current_user,
-        post_id=request.args.get('post_id')
+        post_id=post_id
         ).order_by(Reaction.id.desc()).first()
     '''check for like flag population'''
     if current_form_values:
@@ -179,10 +180,12 @@ def post_reaction(post_id):
             like=form.like.data,
             flag=form.flag.data,
             author=current_user,
-            post_id=request.args.get('post_id')
+            post_id=post_id
             )
         db.session.add(reaction)
         db.session.commit()
         flash('Reacted to post successfully', 'success')
         return redirect(url_for('home'))
-    return render_template('post_reaction.html', post=post, form=form)
+    print(f"post: {post}")
+    print(f"r_form: {r_form}")
+    return render_template('post_reaction.html', post=post, r_form=form)

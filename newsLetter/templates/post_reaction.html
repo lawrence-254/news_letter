@@ -5,37 +5,17 @@
     method="post"
     enctype="multipart/form-data"
   >
-    {{ form.hidden_tag() }}
+    {{ r_form.hidden_tag() }}
     <fieldset class="form-group">
-      <div class="form-group">
-        {{form.comment.label(class="form-control-label") }}
-        <!-- checking for correct comment parameters  -->
-        {% if form.comment.errors %}
-        <!--   -->
-        {{ form.comment(class="form-control form-control-lg is-invalid") }}
-        <!-- error display block -->
-        <div class="invalid-feedback">
-          {% for error in form.comment.errors %}
-          <span>{{ error }}</span>
-          {% endfor %}
-        </div>
-        <!-- end of error display block -->
-        {% else %}
-        <!--  -->
-        {{ form.comment(class="form-control form-control-lg") }}
-        <!--  -->
-        {% endif %}
-        <!-- end of checking -->
-      </div>
-
+      <!-- ... other form elements ... -->
       <div class="form-group mb-4 btn-group-toggle" data-toggle="buttons">
         <label class="btn" id="like">
           <input
             type="checkbox"
-            name="{{ form.like.name }}"
+            name="{{ r_form.like.name }}"
             {%
             if
-            form.like.data
+            r_form.like.data
             %}checked{%
             endif
             %}
@@ -45,10 +25,10 @@
         <label class="btn" id="flag">
           <input
             type="checkbox"
-            name="{{ form.flag.name }}"
+            name="{{ r_form.flag.name }}"
             {%
             if
-            form.flag.data
+            r_form.flag.data
             %}checked{%
             endif
             %}
@@ -58,11 +38,12 @@
       </div>
     </fieldset>
     <div class="form-group mt-4 mb-4">
-      {{ form.submit(class="btn btn-outline-success") }}
+      {{ r_form.submit(class="btn btn-outline-success") }}
     </div>
   </form>
 </div>
 {% endblock content %}
+
 <script>
   document.addEventListener("DOMContentLoaded", function () {
     const likeButton = document.querySelector("#like");
