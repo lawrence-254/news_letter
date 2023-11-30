@@ -40,6 +40,7 @@ class Post(db.Model):
     content = db.Column(db.Text, nullable=False)
     content_image = db.Column(db.String(200))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    reaction = db.relationship('Reaction', backref='post', lazy=True)
 
 
     def __repr__(self):

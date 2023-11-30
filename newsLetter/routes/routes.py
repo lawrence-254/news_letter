@@ -156,7 +156,7 @@ def post_delete(post_id):
     flash(f'Post deleted!', 'info')
     return redirect(url_for('home'))
 
-@app.route('/post/reaction/<int:post_id>', methods=['GET', 'POST'])
+@app.route('/post/<int:post_id>/post_reaction', methods=['GET', 'POST'])
 @login_required
 def post_reaction(post_id):
     '''post id'''
@@ -185,7 +185,7 @@ def post_reaction(post_id):
         db.session.add(reaction)
         db.session.commit()
         flash('Reacted to post successfully', 'success')
-        return redirect(url_for('home'))
+        return redirect(url_for('post', post_id=post.id))
     print(f"post: {post}")
     print(f"r_form: {r_form}")
-    return render_template('post_reaction.html', post=post, r_form=form)
+    return render_template('post.html', post=post, reaction_form=form)
