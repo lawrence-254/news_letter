@@ -2,10 +2,9 @@ import os
 import secrets
 from flask import render_template, request, url_for, flash, redirect, abort
 from newsLetter import app, db, crypt
-from newsLetter.forms import RegistrationForm, LoginForm, UpdateDetailsForm, PostForm, ReactionForm
+from newsLetter.forms import RegistrationForm, ReactionForm, LoginForm, UpdateDetailsForm, PostForm
 from newsLetter.models.models import User, Post, Reaction
 from flask_login import login_user, current_user, logout_user, login_required
-
 
 @app.route("/")
 @app.route("/home/")
@@ -120,7 +119,8 @@ def new_post():
 @app.route('/post/<int:post_id>')
 def post(post_id):
     post = Post.query.get_or_404(post_id)
-    return render_template('post.html', title=post.title, post=post)
+    reaction_form = ReactionForm()
+    return render_template('post.html', title=post.title, post=post, reaction_form=reaction_form)
 
 
 @app.route('/post/<int:post_id>/update', methods=['GET', 'POST'])
@@ -161,7 +161,7 @@ def post_delete(post_id):
 def post_reaction(post_id):
     '''post id'''
     post = Post.query.get_or_404(post_id)
-    form = ReactionForm()
+    reaction_form = ReactionForm()
 
     '''retrieve form values'''
     current_form_values = Reaction.query.filter_by(
@@ -170,15 +170,15 @@ def post_reaction(post_id):
         ).order_by(Reaction.id.desc()).first()
     '''check for like flag population'''
     if current_form_values:
-        form.like.default = current_form_values.like
-        form.flag.default = current_form_values.flag
-        form.process()
+        reaction_form.like.default = current_form_values.like
+        reaction_form.flag.default = current_form_values.flag
+        reaction_form.process()
     '''validate incoming values'''
-    if form.validate_on_submit():
+    if reaction_form.validate_on_submit():
         reaction = Reaction(
-            comment=form.comment.data,
-            like=form.like.data,
-            flag=form.flag.data,
+            comment=reaction_form.comment.data,
+            like=reaction_form.like.data,
+            flag=reaction_form.flag.data,
             author=current_user,
             post_id=post_id
             )
@@ -187,5 +187,5 @@ def post_reaction(post_id):
         flash('Reacted to post successfully', 'success')
         return redirect(url_for('post', post_id=post.id))
     print(f"post: {post}")
-    print(f"r_form: {r_form}")
-    return render_template('post.html', post=post, reaction_form=form)
+    print(f"reaction_form: {reaction_form}")
+    return render_template('post.html', post=post, reaction_form=reaction_form)

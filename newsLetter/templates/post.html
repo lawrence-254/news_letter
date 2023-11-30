@@ -52,17 +52,33 @@
         method="post"
         enctype="multipart/form-data"
       >
-        {{ r_form.hidden_tag() }}
+        {{ reaction_form.hidden_tag() }}
         <fieldset class="form-group">
           <!-- ... other form elements ... -->
+          <div class="form-group">
+            {{ reaction_form.comment.label(class="form-control-label") }}
+            <!--  -->
+            {% if reaction_form.comment.errors %}
+            <!--  -->
+            {{ reaction_form.comment(class="form-control form-control-lg
+            is-invalid") }}
+            <!--  -->
+            <div class="invalid-feedback">
+              {% for error in reaction_form.comment.errors %}
+              <span>{{ error }}</span>
+              {% endfor %}
+            </div>
+            {% else %} {{ reaction_form.comment(class="form-control
+            form-control-lg") }} {% endif %}
+          </div>
           <div class="form-group mb-4 btn-group-toggle" data-toggle="buttons">
             <label class="btn" id="like">
               <input
                 type="checkbox"
-                name="{{ r_form.like.name }}"
+                name="{{ reaction_form.like.name }}"
                 {%
                 if
-                r_form.like.data
+                reaction_form.like.data
                 %}checked{%
                 endif
                 %}
@@ -72,10 +88,10 @@
             <label class="btn" id="flag">
               <input
                 type="checkbox"
-                name="{{ r_form.flag.name }}"
+                name="{{ reaction_form.flag.name }}"
                 {%
                 if
-                r_form.flag.data
+                reaction_form.flag.data
                 %}checked{%
                 endif
                 %}
@@ -85,7 +101,7 @@
           </div>
         </fieldset>
         <div class="form-group mt-4 mb-4">
-          {{ r_form.submit(class="btn btn-outline-success") }}
+          {{ reaction_form.submit(class="btn btn-outline-success") }}
         </div>
       </form>
     </div>
