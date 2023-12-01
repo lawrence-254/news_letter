@@ -97,7 +97,7 @@
 <!-- 1 section -->
 <div class="article-reactions mt-4">
   <h3>Reactions</h3>
-  {% for reaction in post.reactions %}
+  {% for reaction in reactions %}
   <p>
     <strong>{{ reaction.author.username }}</strong>: {{ reaction.comment }} {%
     if reaction.like %}
@@ -107,6 +107,26 @@
     {% endif %}
   </p>
   {% endfor %}
+</div>
+<div class="pagination">
+  {%- if reactions.prev() %}
+  <a href="{{ url_for('post', post_id=post.id, page=reactions.prev_num) }}"
+    >« Previous</a
+  >
+  {%- endif %} {%- for page_num in reactions.iter_pages() %} {% if page_num %}
+  {% if page_num != reactions.page %}
+  <a href="{{ url_for('post', post_id=post.id, page=page_num) }}"
+    >{{ page_num }}</a
+  >
+  {% else %}
+  <strong>{{ page_num }}</strong>
+  {% endif %} {% else %}
+  <span class="ellipsis">…</span>
+  {% endif %} {%- endfor %} {%- if reactions.next() %}
+  <a href="{{ url_for('post', post_id=post.id, page=reactions.next_num) }}"
+    >Next »</a
+  >
+  {%- endif %}
 </div>
 <!-- / -->
 <!-- Modal -->

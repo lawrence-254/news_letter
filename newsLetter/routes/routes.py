@@ -120,7 +120,8 @@ def new_post():
 def post(post_id):
     post = Post.query.get_or_404(post_id)
     reaction_form = ReactionForm()
-    return render_template('post.html', title=post.title, post=post, reaction_form=reaction_form)
+    reactions = Reaction.query.filter_by(post_id=post.id).paginate(page=request.args.get('page', 1, type=int), per_page=5)
+    return render_template('post.html', title=post.title, post=post, reaction_form=reaction_form, reactions=reactions)
 
 
 @app.route('/post/<int:post_id>/update', methods=['GET', 'POST'])
@@ -189,3 +190,4 @@ def post_reaction(post_id):
     print(f"post: {post}")
     print(f"reaction_form: {reaction_form}")
     return render_template('post.html', post=post, reaction_form=reaction_form)
+
