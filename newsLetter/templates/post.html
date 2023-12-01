@@ -97,15 +97,13 @@
 <!-- 1 section -->
 <div class="article-reactions mt-4">
   <h3>Reactions</h3>
+  <div class="total-counts">
+    <p class="badge badge-success">Total Likes: {{ total_likes }}</p>
+    <p class="badge badge-warning">Total Flags: {{ total_flags }}</p>
+  </div>
+  <h2 class="font-italic">comments</h2>
   {% for reaction in reactions %}
-  <p>
-    <strong>{{ reaction.author.username }}</strong>: {{ reaction.comment }} {%
-    if reaction.like %}
-    <span class="badge badge-success">Like</span>
-    {% endif %} {% if reaction.flag %}
-    <span class="badge badge-danger">Flag</span>
-    {% endif %}
-  </p>
+  <p><strong>{{ reaction.author.username }}</strong>: {{ reaction.comment }}</p>
   {% endfor %}
 </div>
 <div class="pagination">

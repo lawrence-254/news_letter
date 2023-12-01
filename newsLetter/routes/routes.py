@@ -121,7 +121,9 @@ def post(post_id):
     post = Post.query.get_or_404(post_id)
     reaction_form = ReactionForm()
     reactions = Reaction.query.filter_by(post_id=post.id).paginate(page=request.args.get('page', 1, type=int), per_page=5)
-    return render_template('post.html', title=post.title, post=post, reaction_form=reaction_form, reactions=reactions)
+    total_likes = Reaction.query.filter_by(post_id=post.id, like=True).count()
+    total_flags = Reaction.query.filter_by(post_id=post.id, flag=True).count()
+    return render_template('post.html', title=post.title, post=post, reaction_form=reaction_form, reactions=reactions, total_likes=total_likes, total_flags=total_flags)
 
 
 @app.route('/post/<int:post_id>/update', methods=['GET', 'POST'])
