@@ -120,8 +120,8 @@ def new_post():
     form = PostForm()
     if form.validate_on_submit():
         post = Post(title=form.title.data, content= form.content.data, author=current_user)
-        if form.picture.data:
-            image_file = form.picture.data
+        if form.content_image.data:
+            image_file = form.content_image.data
             if allowed_file(image_file.filename):
                 filename = secure_filename(image_file.filename)
                 image_path = os.path.join(app.root_path, UPLOAD_FOLDER, filename)
