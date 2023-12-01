@@ -2,9 +2,13 @@
 <h1>post</h1>
 <article class="media content-section">
   <div class="media-body">
-    {% if post.content_image %} <img src="{{ url_for('static',
-    filename="content_images/" + post.content_image) }}" alt="{{ post.title }}"
-    class="img-fluid" /> {% endif %}
+    {% if post.content_image %}
+    <img
+      src="{{ url_for('static', filename=post.content_image) }}"
+      alt="{{ post.title }}"
+      class="img-fluid"
+    />
+    {% endif %}
     <h2 class="article-title">{{ post.title }}</h2>
     <p class="article-content">{{ post.content }}</p>
     <div class="article-metadata bt-4px">
@@ -34,7 +38,7 @@
     </div>
   </div>
 </article>
-<!--  -->
+<!-- edit/add post -->
 {% if current_user.is_authenticated %}
 <div class="content-section">
   <form
@@ -62,7 +66,7 @@
         form-control-lg") }} {% endif %}
       </div>
       <div class="form-group mb-4 btn-group-toggle" data-toggle="buttons">
-        <label class="btn" id="like">
+        <label class="btn btn-success" id="like">
           <input
             type="checkbox"
             name="{{ reaction_form.like.name }}"
@@ -75,7 +79,7 @@
           />
           Like
         </label>
-        <label class="btn" id="flag">
+        <label class="btn btn-warning" id="flag">
           <input
             type="checkbox"
             name="{{ reaction_form.flag.name }}"
@@ -96,8 +100,8 @@
   </form>
 </div>
 {% endif %}
-<!-- / -->
-<!-- 1 section -->
+<!-- /end of edit/add post -->
+<!-- reaction display section -->
 <div class="article-reactions mt-4">
   <h3>Reactions</h3>
   <div class="total-counts">
@@ -109,6 +113,9 @@
   <p><strong>{{ reaction.author.username }}</strong>: {{ reaction.comment }}</p>
   {% endfor %}
 </div>
+<!-- end of reaction section -->
+<!-- pagination section -->
+{% if reactions.total > 5 %}
 <div class="pagination">
   {%- if reactions.prev() %}
   <a href="{{ url_for('post', post_id=post.id, page=reactions.prev_num) }}"
@@ -129,8 +136,9 @@
   >
   {%- endif %}
 </div>
-<!-- / -->
-<!-- Modal -->
+{% endif %}
+<!-- /end of pagination -->
+<!-- Modal section -->
 <div
   class="modal fade"
   id="deleteModal"

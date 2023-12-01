@@ -9,6 +9,14 @@
         >{{post.date_posted.strftime('%Y-%m-%d %H:%M') }}</small
       >
     </div>
+    {% if post.content_image %}
+    <img
+      src="{{ url_for('static', filename=post.content_image) }}"
+      alt="{{ post.title }}"
+      class="img-fluid"
+    />
+    {% endif %}
+
     <h2>
       <a class="article-title" href="{{ url_for('post', post_id=post.id) }}"
         >{{ post.title }}</a
