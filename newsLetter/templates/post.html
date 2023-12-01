@@ -3,7 +3,7 @@
 <article class="media content-section">
   <div class="media-body">
     {% if post.content_image %} <img src="{{ url_for('static',
-    filename="content_image/" + post.content_image) }}" alt="{{ post.title }}"
+    filename="content_images/" + post.content_image) }}" alt="{{ post.title }}"
     class="img-fluid" /> {% endif %}
     <h2 class="article-title">{{ post.title }}</h2>
     <p class="article-content">{{ post.content }}</p>

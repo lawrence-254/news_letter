@@ -74,9 +74,9 @@ class PostForm(FlaskForm):
     content_image = FileField('Content Image', validators=[FileAllowed(['jpg', 'png', 'jpeg'])])
     submit = SubmitField('Post')
 
-class EditImageForm(FlaskForm):
-    image = FileField('Update Image', validators=[FileAllowed(['jpg', 'jpeg', 'png'])])
-    submit = SubmitField('Update')
+# class EditImageForm(FlaskForm):
+#     image = FileField('Update Image', validators=[FileAllowed(['jpg', 'jpeg', 'png'])])
+#     submit = SubmitField('Update')
 
 class ReactionForm(FlaskForm):
     '''Form to record reaction i.e  comments'''

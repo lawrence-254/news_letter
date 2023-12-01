@@ -3,19 +3,24 @@ import secrets
 from werkzeug.utils import secure_filename
 from flask import render_template, request, url_for, flash, redirect, abort
 from newsLetter import app, db, crypt
-from newsLetter.forms import RegistrationForm, ReactionForm, LoginForm, UpdateDetailsForm, PostForm, EditImageForm
+from newsLetter.forms import RegistrationForm, ReactionForm, LoginForm, UpdateDetailsForm, PostForm
 from newsLetter.models.models import User, Post, Reaction
 from flask_login import login_user, current_user, logout_user, login_required
 
+
+# '''Home route section'''
 @app.route("/")
 @app.route("/home/")
 def home():
+    '''Home route section'''
     Posts= Post.query.all()
     return render_template('home.html', posts=Posts, title='Home')
+# '''end of home route'''
 
-
+# '''about route'''
 @app.route("/about/")
 def about():
+    '''about route'''
     return render_template('about.html', title='About')
 
 
@@ -119,7 +124,7 @@ def new_post():
             image_file = form.picture.data
             if allowed_file(image_file.filename):
                 filename = secure_filename(image_file.filename)
-                image_path = os.path.join(current_app.root_path, UPLOAD_FOLDER, filename)
+                image_path = os.path.join(app.root_path, UPLOAD_FOLDER, filename)
                 image_file.save(image_path)
                 post.content_image = f'content_images/{filename}'
         db.session.add(post)
@@ -146,22 +151,20 @@ def post_update(post_id):
     if post.author != current_user:
         abort(403)
     form = PostForm()
-    image_form = EditImageForm()
+
     if form.validate_on_submit():
         post.title = form.title.data
         post.content = form.content.data
+        post.content_image = form.content_image.data
 
-        if image_form.image.data:
-            old_image_path = post.content_image
-            if old_image_path:
-                old_image_path = os.path.join(current_app.root_path, old_image_path)
-                os.remove(old_image_path)
+        if form.content_image.data:
+            image_file = form.content_image.data
+            if allowed_file(image_file.filename):
+                filename = secure_filename(image_file.filename)
+                image_path = os.path.join(app.root_path, UPLOAD_FOLDER, filename)
+                image_file.save(image_path)
+                post.content_image = os.path.join('content_images', filename)
 
-            new_image = image_form.image.data
-            filename = secure_filename(new_image.filename)
-            new_image_path = os.path.join(current_app.root_path, 'static', 'content_images', filename)
-            new_image.save(new_image_path)
-            post.content_image = 'content_images/' + filename
         db.session.commit()
         flash(f'Post Update Success', 'success')
         return redirect(url_for('post', post_id=post.id))
@@ -172,7 +175,6 @@ def post_update(post_id):
         'create_post.html',
         title='Update Your Post',
         form=form,
-        image_form=image_form,
         legend='Update Your Post')
 
 @app.route('/post/<int:post_id>/delete', methods=['POST'])
