@@ -61,14 +61,6 @@ class Reaction(db.Model):
     post_id = db.Column(db.Integer, db.ForeignKey('post.id'), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
-    def __init__(self, total, comment, like, flag, post_id, user_id):
-        self.total = total
-        self.comment = comment
-        self.like = like
-        self.flag = flag
-        self.post_id = post_id
-        self.user_id = user_id
-
 
     def __repr__(self):
         return f"Reaction('{self.like}', '{self.date_posted}')"

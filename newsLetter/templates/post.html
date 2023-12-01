@@ -116,25 +116,26 @@
 <!-- end of reaction section -->
 <!-- pagination section -->
 <div class="pagination">
-  {%- if reactions.prev() %}
+  {%- if reactions.has_prev %}
   <a href="{{ url_for('post', post_id=post.id, page=reactions.prev_num) }}"
-    >« Previous
-  </a>
+    >« Previous</a
+  >
   {%- endif %} {%- for page_num in reactions.iter_pages() %} {% if page_num %}
   {% if page_num != reactions.page %}
   <a href="{{ url_for('post', post_id=post.id, page=page_num) }}"
     >{{ page_num }}</a
   >
   {% else %}
-   <strong> {{ page_num }} </strong> 
+  <strong>{{ page_num }}</strong>
   {% endif %} {% else %}
   <span class="ellipsis">…</span>
-  {% endif %} {%- endfor %} {%- if reactions.next() %}
+  {% endif %} {%- endfor %} {%- if reactions.has_next %}
   <a href="{{ url_for('post', post_id=post.id, page=reactions.next_num) }}"
     >Next »</a
   >
   {%- endif %}
 </div>
+
 <!-- /end of pagination -->
 <!-- Modal section -->
 <div

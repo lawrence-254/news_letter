@@ -81,3 +81,4 @@ class ReactionForm(FlaskForm):
     like = BooleanField('Like')
     flag = BooleanField('Flag')
     submit = SubmitField('Submit')
+   
