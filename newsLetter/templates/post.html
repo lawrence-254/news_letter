@@ -115,7 +115,6 @@
 </div>
 <!-- end of reaction section -->
 <!-- pagination section -->
-{% if reactions.total > 5 %}
 <div class="pagination">
   {%- if reactions.prev() %}
   <a href="{{ url_for('post', post_id=post.id, page=reactions.prev_num) }}"
@@ -136,7 +135,6 @@
   >
   {%- endif %}
 </div>
-{% endif %}
 <!-- /end of pagination -->
 <!-- Modal section -->
 <div

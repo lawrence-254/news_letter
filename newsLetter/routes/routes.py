@@ -188,13 +188,17 @@ def post_delete(post_id):
     flash(f'Post deleted!', 'info')
     return redirect(url_for('home'))
 
+def get_reactions():
+    '''retrieves reaction data'''
+    return Reaction.query.all()
+
 @app.route('/post/<int:post_id>/post_reaction', methods=['GET', 'POST'])
 @login_required
 def post_reaction(post_id):
     '''post id'''
     post = Post.query.get_or_404(post_id)
     reaction_form = ReactionForm()
-
+    reactions = get_reactions()
     '''retrieve form values'''
     current_form_values = Reaction.query.filter_by(
         author=current_user,
@@ -220,5 +224,5 @@ def post_reaction(post_id):
         return redirect(url_for('post', post_id=post.id))
     print(f"post: {post}")
     print(f"reaction_form: {reaction_form}")
-    return render_template('post.html', post=post, reaction_form=reaction_form)
+    return render_template('post.html', post=post, reactions=reactions, reaction_form=reaction_form)
 
