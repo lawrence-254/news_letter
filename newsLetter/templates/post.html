@@ -11,7 +11,7 @@
     {% endif %}
     <h2 class="article-title">{{ post.title }}</h2>
     <p class="article-content">{{ post.content }}</p>
-    <div class="article-metadata bt-4px">
+    <div class="article-metadata border-top border-4px">
       <img src="{{ url_for('static', filename="avi/" + post.author.user_avi )
       }}" alt="" class="rounded-circle article-img" />
       <a class="mr-2" href="#">{{ post.author.username }}</a>
