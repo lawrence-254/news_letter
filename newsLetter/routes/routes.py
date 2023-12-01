@@ -1,8 +1,9 @@
 import os
 import secrets
+from werkzeug.utils import secure_filename
 from flask import render_template, request, url_for, flash, redirect, abort
 from newsLetter import app, db, crypt
-from newsLetter.forms import RegistrationForm, ReactionForm, LoginForm, UpdateDetailsForm, PostForm
+from newsLetter.forms import RegistrationForm, ReactionForm, LoginForm, UpdateDetailsForm, PostForm, EditImageForm
 from newsLetter.models.models import User, Post, Reaction
 from flask_login import login_user, current_user, logout_user, login_required
 
@@ -103,12 +104,24 @@ def account():
         form=form,
         posts=Posts)
 
+UPLOAD_FOLDER = 'static/content_images'
+ALLOWED_EXTENSIONS = {'jpg', 'jpeg', 'png'}
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
 @app.route('/post/new', methods=['GET', 'POST'])
 @login_required
 def new_post():
     form = PostForm()
     if form.validate_on_submit():
         post = Post(title=form.title.data, content= form.content.data, author=current_user)
+        if form.picture.data:
+            image_file = form.picture.data
+            if allowed_file(image_file.filename):
+                filename = secure_filename(image_file.filename)
+                image_path = os.path.join(current_app.root_path, UPLOAD_FOLDER, filename)
+                image_file.save(image_path)
+                post.content_image = f'content_images/{filename}'
         db.session.add(post)
         db.session.commit()
         flash('post created successfully')
@@ -133,9 +146,22 @@ def post_update(post_id):
     if post.author != current_user:
         abort(403)
     form = PostForm()
+    image_form = EditImageForm()
     if form.validate_on_submit():
         post.title = form.title.data
         post.content = form.content.data
+
+        if image_form.image.data:
+            old_image_path = post.content_image
+            if old_image_path:
+                old_image_path = os.path.join(current_app.root_path, old_image_path)
+                os.remove(old_image_path)
+
+            new_image = image_form.image.data
+            filename = secure_filename(new_image.filename)
+            new_image_path = os.path.join(current_app.root_path, 'static', 'content_images', filename)
+            new_image.save(new_image_path)
+            post.content_image = 'content_images/' + filename
         db.session.commit()
         flash(f'Post Update Success', 'success')
         return redirect(url_for('post', post_id=post.id))
@@ -146,6 +172,7 @@ def post_update(post_id):
         'create_post.html',
         title='Update Your Post',
         form=form,
+        image_form=image_form,
         legend='Update Your Post')
 
 @app.route('/post/<int:post_id>/delete', methods=['POST'])
