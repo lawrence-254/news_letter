@@ -1,4 +1,4 @@
-{% extends "layout.html" %} {% block content %} {% for post in posts %}
+{% extends "layout.html" %} {% block content %} {% for post in posts.items %}
 <article class="media content-section">
   <img src="{{ url_for('static', filename="avi/" + post.author.user_avi ) }}"
   alt="" class="rounded-circle article-img" />
