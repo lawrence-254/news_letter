@@ -25,4 +25,19 @@
     <p class="article-content">{{ post.content }}</p>
   </div>
 </article>
-{% endfor %} {% endblock content %}
+{% endfor %}
+<!-- pagination  -->
+{% for page_num in posts.iter_pages() %}
+<!-- condition check -->
+{% if page_num %}
+<a href="{{ url_for('home', page=page_num) }}" class="mb-4 btn btn-outline-info"
+  >{{ page_num }}</a
+>
+{% else %}
+###
+<!--  -->
+{% endif %}
+<!--  -->
+{% endfor %}
+<!--  -->
+{% endblock content %}
