@@ -13,9 +13,9 @@ from flask_login import login_user, current_user, logout_user, login_required
 @app.route("/home/")
 def home():
     '''Home route section'''
-    page = request.args.get('page', 6, type=int)
-    Posts= Post.query.paginate(page=page, per_page=1)
-    return render_template('home.html', posts=Posts, title='Home')
+    page = request.args.get('page', 1, type=int)
+    posts= Post.query.order_by(Post.date_posted.desc()).paginate(page=page, per_page=6)
+    return render_template('home.html', posts=posts, title='Home')
 # '''end of home route'''
 
 # '''about route'''
@@ -197,7 +197,7 @@ def get_paginated_reactions(page=1, per_page=10):
 @login_required
 def post_reaction(post_id):
     '''post id'''
-    post = Post.query.get_or_404(post_id)
+    post = Post.query.filter_by(id=post_id).first_or_404()
     reaction_form = ReactionForm()
     reactions = get_paginated_reactions(page=request.args.get('page', 1))
     '''retrieve form values'''
