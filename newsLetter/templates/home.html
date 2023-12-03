@@ -27,14 +27,21 @@
 </article>
 {% endfor %}
 <!-- pagination  -->
-{% for page_num in posts.iter_pages() %}
+{% for page_num in posts.iter_pages(left_edge=3, right_edge=3, left_current=1,
+right_current=2) %}
 <!-- condition check -->
-{% if page_num %}
-<a href="{{ url_for('home', page=page_num) }}" class="mb-4 btn btn-outline-info"
+{% if page_num %} {% if posts.page == page_num %}
+<a href="{{ url_for('home', page=page_num) }}" class="mb-4 btn btn-secondary"
   >{{ page_num }}</a
 >
 {% else %}
-###
+<a
+  href="{{ url_for('home', page=page_num) }}"
+  class="mb-4 btn btn-outline-seconadry"
+  >{{ page_num }}</a
+>
+{% endif %} {% else %}
+...
 <!--  -->
 {% endif %}
 <!--  -->

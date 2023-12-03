@@ -13,7 +13,7 @@ from flask_login import login_user, current_user, logout_user, login_required
 @app.route("/home/")
 def home():
     '''Home route section'''
-    page = request.args.get('page', 1, type=int)
+    page = request.args.get('page', 6, type=int)
     Posts= Post.query.paginate(page=page, per_page=1)
     return render_template('home.html', posts=Posts, title='Home')
 # '''end of home route'''
