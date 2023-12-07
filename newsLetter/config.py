@@ -1,7 +1,8 @@
 import os
 class Config:
-    databaseLink = 'mysql+mysqlconnector://root@localhost/news_letter'
-    SQLALCHEMY_DATABASE_URI = databaseLink
+    # postgressdblink = postgres://news_letter_user:QbOCIWZC3na9byfU8uIIs79FlUQGciou@dpg-closdvhoh6hc73bn2ps0-a/news_letter
+    # databaseLink = 'mysql+mysqlconnector://root@localhost/news_letter'
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SECRET_KEY = 'f43e0ff5e0ad8b9594af298c550b92ca'
     # '''secret key'''
@@ -17,3 +18,5 @@ class Config:
     MAIL_USE_TLS = True
     MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
+
+    # postgres://news_letter_user:QbOCIWZC3na9byfU8uIIs79FlUQGciou@dpg-closdvhoh6hc73bn2ps0-a.oregon-postgres.render.com/news_letter
