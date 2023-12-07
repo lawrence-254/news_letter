@@ -1,3 +1,8 @@
+import os
+import secrets
+from flask import url_for
+from flask_mail import Message
+from newsLetter import app, mail
 
 def save_picture(input_picture):
     rand = secrets.token_hex(4)
