@@ -2,10 +2,11 @@ import os
 import secrets
 from werkzeug.utils import secure_filename
 from flask import render_template, request, url_for, flash, redirect, abort
-from newsLetter import app, db, crypt
-from newsLetter.forms import RegistrationForm, ReactionForm, LoginForm, UpdateDetailsForm, PostForm
+from newsLetter import app, db, crypt, mail
+from newsLetter.forms import RegistrationForm, ReactionForm, LoginForm, UpdateDetailsForm, PostForm, ResetPasswordForm, ResetRequestForm
 from newsLetter.models.models import User, Post, Reaction
 from flask_login import login_user, current_user, logout_user, login_required
+from flask_mail import Message
 
 
 # '''Home route section'''
@@ -227,3 +228,56 @@ def post_reaction(post_id):
     print(f"reaction_form: {reaction_form}")
     return render_template('post.html', post=post, reactions=reactions, reaction_form=reaction_form)
 
+def send_to_reset_email(user):
+    try:
+        token = user.get_reset_token()
+    except Exception as e:
+        print(f"Error generating reset token: {e}")
+        return "Error generating reset token"
+    msg = Message(
+        'Password reset request successful',
+        sender='newsletter@mail.com',
+        recipients=[user.email])
+    msg.body = f'''
+visit this link {url_for('reset_request_token', token=token, _external=True)} to reset tour password.
+
+Ignore  this if you did not request a password change
+'''
+    try:
+        mail.send(msg)
+        return "Password reset email sent successfully"
+    except Exception as e:
+        print(f"Error sending reset email: {e}")
+        return "Error sending reset email"
+
+@app.route('/reset_password', methods=['GET', 'POST'])
+def reset_request():
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
+    form = ResetRequestForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data).first()
+        send_to_reset_email(user)
+        flash('Check your email for the reset token which is valid for 1 hour', 'warning')
+        return redirect(url_for('login'))
+    return render_template('reset_request.html', title='Reset Password', form=form)
+
+@app.route('/reset_password/<token>', methods=['GET', 'POST'])
+def reset_request_token(token):
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
+    user = User.verify_reset_token(token)
+    if user is None:
+        flash('Your token is invalid or expired', 'danger')
+        return redirect(url_for('login'))
+    form = ResetPasswordForm()
+    if form.validate_on_submit():
+        # Generate hashed password
+        pwd = form.password.data
+        hashed_password = crypt.generate_password_hash(pwd).decode('utf-8')
+        user.password = hashed_password
+        # Add the user to the database and commit the changes
+        db.session.commit()
+        flash(f"password update Success, please login", 'success')
+        return redirect(url_for('login'))
+    return render_template('reset_request_token.html', title='Reset Password', form=form)

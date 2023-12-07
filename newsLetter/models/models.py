@@ -1,4 +1,5 @@
 '''A file containing different database classes'''
+from itsdangerous import TimedSerializer
 from datetime import datetime
 from newsLetter import db, login_manager, app
 from flask_login import UserMixin
@@ -25,15 +26,18 @@ class User(db.Model, UserMixin):
     reaction = db.relationship('Reaction', backref='author', lazy=True)
 
     def get_reset_token(self, expires_in_sec=3600):
-        s = Serializer(app.config['SECRET_KEY'], expires_in_sec)
-        return s.dumps({'user_id': self.id})
+        s = TimedSerializer(app.config['SECRET_KEY'], expires_in_sec)
+        token_bytes = s.dumps({'user_id': self.id})
+        return token_bytes.decode('utf-8')
 
     @staticmethod
     def verify_reset_token(token):
-        s = Serializer(app.config['SECRET_KEY'])
+        s = TimedSerializer(current_app.config['SECRET_KEY'])
         try:
-            user_id = s.loads(token)['user_id']
-        except:
+            data = s.loads(token.encode('utf-8'))
+            user_id = data['user_id']
+            return User.query.get(user_id)
+        except Exception as e:
             return None
         return User.query.get()
 

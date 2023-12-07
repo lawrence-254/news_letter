@@ -81,4 +81,20 @@ class ReactionForm(FlaskForm):
     like = BooleanField('Like')
     flag = BooleanField('Flag')
     submit = SubmitField('Submit')
-   
+
+
+class ResetRequestForm(FlaskForm):
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    submit = SubmitField('Request for a Password Reset')
+
+    def validate_email(self, email):
+        '''checks for email duplication'''
+        email = User.query.filter_by(email=email.data).first()
+        if email is None:
+            raise ValidationError('Email does not exist, please check your email')
+
+class ResetPasswordForm(FlaskForm):
+    password = PasswordField('Password', validators=[DataRequired()])
+    confirm_password = PasswordField(
+        'Confirm Password', validators=[DataRequired(), EqualTo('password')])
+    submit = SubmitField('Reset password')
