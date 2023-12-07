@@ -45,7 +45,6 @@
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarToggle">
-
             <!-- Navbar Right Side -->
             {% if current_user.is_authenticated %}
             <div class="navbar-nav ml-auto">
@@ -69,6 +68,11 @@
               >
             </div>
             {% endif %}
+            <div class="navbar-nav ml-0">
+              <a class="nav-item nav-link" href="{{ url_for('about') }}">
+                About
+              </a>
+            </div>
           </div>
         </div>
       </nav>
@@ -76,46 +80,7 @@
     <!-- main content section -->
     <main role="main" class="container">
       <div class="row">
-        <div class="col-md-2 mt-0">
-          <div class="content-section">
-            <h3>{{ title }}</h3>
-            <p class='text-muted'>
-              <ul class="list-group">
-                <li class="list-group-item list-group-item-light">
-                  <div class="navbar-nav mr-auto">
-                    <a class="navbar-brand mr-4" href="{{ url_for('home') }}">
-                      Home
-                    </a>
-                  </div>
-                </li>
-                {% if current_user.is_authenticated %}
-                <li class="list-group-item list-group-item-light">
-                  <div class="navbar-nav mr-auto">
-                    <a class="nav-item nav-link" href="{{ url_for('new_post') }}">
-                      New Post
-                    </a>
-                  </div>
-                </li>
-                <li class="list-group-item list-group-item-light">
-                  <div class="navbar-nav mr-auto">
-                  <a class="nav-item nav-link" href="{{ url_for('account') }}">
-                    Account
-                  </a>
-                  </div>
-                </li>
-                {% endif %}
-                <li class="list-group-item list-group-item-light">
-                  <div class="navbar-nav mr-auto">
-                    <a class="nav-item nav-link" href="{{ url_for('about') }}">
-                      About
-                    </a>
-                  </div>
-                </li>
-              </ul>
-            </p>
-          </div>
-        </div>
-        <div class="col-md-10">
+        <div class="col-md-12">
           {% with messages = get_flashed_messages(with_categories=True) %} {% if
           messages %} {% for category, message in messages %}
           <div class="alert alert-{{ category }}">{{ message }}</div>
@@ -129,6 +94,5 @@
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-
   </body>
 </html>

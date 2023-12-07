@@ -2,6 +2,7 @@ from newsLetter.models.models import User, Post, Reaction
 from newsLetter import app, db
 from newsLetter.routes import routes
 
+
 '''A python file that is used to run the news letter web app'''
 
 '''create a db'''
