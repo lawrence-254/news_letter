@@ -1,4 +1,8 @@
-from flask import Blueprint
+from flask import render_template, request, url_for, flash, redirect, abort, Blueprint
+from flask_login import current_user, login_required
+from newsLetter import db
+from newsLetter.models import Post, Reaction
+from newsLetter.post.forms import ReactionForm, PostForm
 
 posts = Blueprint('posts', __name__)
 
