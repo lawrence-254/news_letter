@@ -2,7 +2,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
-from flask_migrate import Migrate
+
 
 app = Flask(__name__)
 '''secret key'''
@@ -15,8 +15,6 @@ app.config['SQLALCHEMY_DATABASE_URI'] = databaseLink
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 '''end of sql configs'''
-# migrate
-migrate = Migrate(app, db)
 '''hashing'''
 crypt = Bcrypt(app)
 '''login manager'''
