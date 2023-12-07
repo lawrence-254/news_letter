@@ -1,13 +1,10 @@
 from newsLetter.models import User, Post, Reaction
-from newsLetter import app, db
-# from newsLetter.routes import routes
+from newsLetter import create_app
 
 
 '''A python file that is used to run the news letter web app'''
 
-'''create a db'''
-# with app.app_context():
-#     db.create_all()
+app = create_app()
 
 if __name__ == '__main__':
     app.run(debug=True)

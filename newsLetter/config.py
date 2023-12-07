@@ -4,8 +4,8 @@ class Config:
     SQLALCHEMY_DATABASE_URI = databaseLink
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SECRET_KEY = 'f43e0ff5e0ad8b9594af298c550b92ca'
-    '''secret key'''
-    # SECRET_KEY = os.environ.get('SECRET_KE')
+    # '''secret key'''
+    # SECRET_KEY = os.environ.get('SECRET_KEY')
 
     # '''db'''
     # SQLALCHEMY_DATABASE_URI = os.environ.get('SQLALCHEMY_DATABASE_URI')

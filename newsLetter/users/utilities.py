@@ -1,14 +1,14 @@
 import os
 import secrets
-from flask import url_for
+from flask import url_for, current_app
 from flask_mail import Message
-from newsLetter import app, mail
+from newsLetter import mail
 
 def save_picture(input_picture):
     rand = secrets.token_hex(4)
     _, file_extension = os.path.splitext(input_picture.filename)
     pic_filename = rand + file_extension
-    pic_path = os.path.join(app.root_path, 'static/avi', pic_filename)
+    pic_path = os.path.join(current_app.root_path, 'static/avi', pic_filename)
     input_picture.save(pic_path)
     return pic_filename
 

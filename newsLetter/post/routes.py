@@ -1,4 +1,4 @@
-from flask import render_template, request, url_for, flash, redirect, abort, Blueprint
+from flask import render_template, request, url_for, flash, redirect, abort, Blueprint, current_app
 from flask_login import current_user, login_required
 from newsLetter import db
 from newsLetter.models import Post, Reaction
@@ -17,7 +17,7 @@ def new_post():
             image_file = form.content_image.data
             if allowed_file(image_file.filename):
                 filename = secure_filename(image_file.filename)
-                image_path = os.path.join(app.root_path, UPLOAD_FOLDER, filename)
+                image_path = os.path.join(current_app.root_path, UPLOAD_FOLDER, filename)
                 image_file.save(image_path)
                 post.content_image = f'content_images/{filename}'
         db.session.add(post)
@@ -54,7 +54,7 @@ def post_update(post_id):
             image_file = form.content_image.data
             if allowed_file(image_file.filename):
                 filename = secure_filename(image_file.filename)
-                image_path = os.path.join(app.root_path, UPLOAD_FOLDER, filename)
+                image_path = os.path.join(current_app.root_path, UPLOAD_FOLDER, filename)
                 image_file.save(image_path)
                 post.content_image = os.path.join('content_images', filename)
 
