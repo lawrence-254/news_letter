@@ -53,14 +53,14 @@
       {{ form.submit(class="btn btn-outline-success") }}
     </div>
     <small class="text-muted mt-4">
-      <a class="ml-2" href="{{ url_for('reset_request') }}">Forgot password?</a>
+      <a class="ml-2" href="{{ url_for('users.reset_request') }}">Forgot password?</a>
     </small>
   </form>
 </div>
 <div class="border-top pt-4">
   <small class="text-muted"
     >Don't have an account?
-    <a class="ml-2" href="{{ url_for('register') }}">REGISTER</a>
+    <a class="ml-2" href="{{ url_for('users.register') }}">REGISTER</a>
   </small>
 </div>
 {% endblock content %}

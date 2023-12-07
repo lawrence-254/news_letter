@@ -1,6 +1,6 @@
-from newsLetter.models.models import User, Post, Reaction
+from newsLetter.models import User, Post, Reaction
 from newsLetter import app, db
-from newsLetter.routes import routes
+# from newsLetter.routes import routes
 
 
 '''A python file that is used to run the news letter web app'''

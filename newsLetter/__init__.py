@@ -21,7 +21,7 @@ db = SQLAlchemy(app)
 crypt = Bcrypt(app)
 '''login manager'''
 login_manager = LoginManager(app)
-login_manager.login_view ='login'
+login_manager.login_view ='users.login'
 login_manager.login_message_category ='danger'
 
 '''mail configs'''
@@ -35,7 +35,13 @@ app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD')
 mail = Mail(app)
 
 ''' import route '''
-from newsLetter.routes import routes
+from newsLetter.users.routes import users
+from newsLetter.post.routes import posts
+from newsLetter.main.routes import main
+
+app.register_blueprint(users)
+app.register_blueprint(posts)
+app.register_blueprint(main)
 '''sql tables'''
 with app.app_context():
     # Create all tables

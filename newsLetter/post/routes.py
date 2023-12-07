@@ -23,7 +23,7 @@ def new_post():
         db.session.add(post)
         db.session.commit()
         flash('post created successfully')
-        return redirect(url_for('home'))
+        return redirect(url_for('main.home'))
     return render_template('create_post.html', title='New Post', legend='New Post', form=form)
 
 
@@ -60,7 +60,7 @@ def post_update(post_id):
 
         db.session.commit()
         flash(f'Post Update Success', 'success')
-        return redirect(url_for('post', post_id=post.id))
+        return redirect(url_for('posts.post', post_id=post.id))
     elif request.method == 'GET':
         form.title.data = post.title
         form.content.data = post.content
@@ -79,7 +79,7 @@ def post_delete(post_id):
     db.session.delete(post)
     db.session.commit()
     flash(f'Post deleted!', 'info')
-    return redirect(url_for('home'))
+    return redirect(url_for('main.home'))
 
 
 @posts.route('/post/<int:post_id>/post_reaction', methods=['GET', 'POST'])
@@ -111,7 +111,7 @@ def post_reaction(post_id):
         db.session.add(reaction)
         db.session.commit()
         flash('Reacted to post successfully', 'success')
-        return redirect(url_for('post', post_id=post.id))
+        return redirect(url_for('posts.post', post_id=post.id))
     print(f"post: {post}")
     print(f"reaction_form: {reaction_form}")
     return render_template('post.html', post=post, reactions=reactions, reaction_form=reaction_form)

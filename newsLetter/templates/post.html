@@ -21,7 +21,7 @@
       {% if post.author == current_user %}
       <div class="">
         <a
-          href="{{ url_for('post_update', post_id=post.id) }}"
+          href="{{ url_for('posts.post_update', post_id=post.id) }}"
           class="btn btn-secondary btn-outline-info btn-sm m-1"
           >Edit your post</a
         >
@@ -42,7 +42,7 @@
 {% if current_user.is_authenticated %}
 <div class="content-section">
   <form
-    action="{{ url_for('post_reaction', post_id=post.id) }}"
+    action="{{ url_for('posts.post_reaction', post_id=post.id) }}"
     method="post"
     enctype="multipart/form-data"
   >
@@ -117,12 +117,13 @@
 <!-- pagination section -->
 <div class="pagination">
   {%- if reactions.has_prev %}
-  <a href="{{ url_for('post', post_id=post.id, page=reactions.prev_num) }}"
+  <a
+    href="{{ url_for('posts.post', post_id=post.id, page=reactions.prev_num) }}"
     >« Previous</a
   >
   {%- endif %} {%- for page_num in reactions.iter_pages() %} {% if page_num %}
   {% if page_num != reactions.page %}
-  <a href="{{ url_for('post', post_id=post.id, page=page_num) }}"
+  <a href="{{ url_for('posts.post', post_id=post.id, page=page_num) }}"
     >{{ page_num }}</a
   >
   {% else %}
@@ -130,7 +131,8 @@
   {% endif %} {% else %}
   <span class="ellipsis">…</span>
   {% endif %} {%- endfor %} {%- if reactions.has_next %}
-  <a href="{{ url_for('post', post_id=post.id, page=reactions.next_num) }}"
+  <a
+    href="{{ url_for('posts.post', post_id=post.id, page=reactions.next_num) }}"
     >Next »</a
   >
   {%- endif %}
@@ -166,7 +168,7 @@
         </button>
         <form
           method="POST"
-          action="{{ url_for('post_delete', post_id=post.id) }}"
+          action="{{ url_for('posts.post_delete', post_id=post.id) }}"
         >
           <button type="submit" class="btn btn-danger">Confirm Delete</button>
         </form>

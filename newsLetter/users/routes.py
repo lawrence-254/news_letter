@@ -2,7 +2,7 @@ from flask import render_template, request, url_for, flash, redirect, abort, Blu
 from newsLetter import db, crypt
 from flask_login import login_user, current_user, logout_user, login_required
 from newsLetter.users.forms import RegistrationForm, LoginForm, UpdateDetailsForm, ResetPasswordForm, ResetRequestForm
-from newsLetter.models.models import User, Post, Reaction
+from newsLetter.models import User, Post, Reaction
 from newsLetter.users.utilities import send_to_reset_email, save_picture, allowed_file, get_paginated_reactions
 
 
@@ -15,7 +15,7 @@ users = Blueprint('users', __name__)
 def register():
 
     if current_user.is_authenticated:
-        return redirect(url_for('home'))
+        return redirect(url_for('main.home'))
     form = RegistrationForm()
     if form.validate_on_submit():
         # Generate hashed password
@@ -31,7 +31,7 @@ def register():
         db.session.add(user_query)
         db.session.commit()
         flash(f"Success, please login", 'success')
-        return redirect(url_for('login'))
+        return redirect(url_for('users.login'))
     else:
         # Handle form validation errors
         for field, errors in form.errors.items():
@@ -45,7 +45,7 @@ def register():
 def login():
 
     if current_user.is_authenticated:
-        return redirect(url_for('home'))
+        return redirect(url_for('main.home'))
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
@@ -53,7 +53,7 @@ def login():
             login_user(user, remember=form.remember.data)
             next_page = request.args.get('next')
             flash(f"welcome back", 'success')
-            return redirect(next_page) if next_page else redirect(url_for('home'))
+            return redirect(next_page) if next_page else redirect(url_for('main.home'))
         else:
             flash(f"Login not successful, please check password and email", 'danger')
     return render_template('login.html', title='Login', form=form)
@@ -61,7 +61,7 @@ def login():
 @users.route('/logout')
 def logout():
     logout_user()
-    return redirect(url_for('home'))
+    return redirect(url_for('main.home'))
 
 
 
@@ -78,7 +78,7 @@ def account():
         current_user.email = form.email.data
         db.session.commit()
         flash(f'Account details update success', 'success')
-        return redirect(url_for('account'))
+        return redirect(url_for('main.account'))
     elif request.method == 'GET':
         form.username.data = current_user.username
         form.email.data = current_user.email
@@ -94,23 +94,23 @@ def account():
 @users.route('/reset_password', methods=['GET', 'POST'])
 def reset_request():
     if current_user.is_authenticated:
-        return redirect(url_for('home'))
+        return redirect(url_for('main.home'))
     form = ResetRequestForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
         send_to_reset_email(user)
         flash('Check your email for the reset token which is valid for 1 hour', 'warning')
-        return redirect(url_for('login'))
+        return redirect(url_for('users.login'))
     return render_template('reset_request.html', title='Reset Password', form=form)
 
 @users.route('/reset_password/<token>', methods=['GET', 'POST'])
 def reset_request_token(token):
     if current_user.is_authenticated:
-        return redirect(url_for('home'))
+        return redirect(url_for('main.home'))
     user = User.verify_reset_token(token)
     if user is None:
         flash('Your token is invalid or expired', 'danger')
-        return redirect(url_for('login'))
+        return redirect(url_for('main.login'))
     form = ResetPasswordForm()
     if form.validate_on_submit():
         # Generate hashed password
@@ -120,5 +120,5 @@ def reset_request_token(token):
         # Add the user to the database and commit the changes
         db.session.commit()
         flash(f"password update Success, please login", 'success')
-        return redirect(url_for('login'))
+        return redirect(url_for('users.login'))
     return render_template('reset_request_token.html', title='Reset Password', form=form)

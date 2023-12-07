@@ -34,7 +34,7 @@ def send_to_reset_email(user):
         sender='newsletter@mail.com',
         recipients=[user.email])
     msg.body = f'''
-visit this link {url_for('reset_request_token', token=token, _external=True)} to reset tour password.
+visit this link {url_for('users.reset_request_token', token=token, _external=True)} to reset tour password.
 
 Ignore  this if you did not request a password change
 '''

@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, SubmitField
+from wtforms import StringField, TextAreaField, SubmitField, BooleanField
 from wtforms.validators import DataRequired
+from flask_wtf.file import FileField, FileAllowed
 
 class PostForm(FlaskForm):
     '''a form used to make/create posts'''
